@@ -3,6 +3,7 @@ package com.ramy.springbootexample.student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -32,6 +33,29 @@ public class StudentService {
             throw new IllegalStateException("Email already exists");
         }
 
+        studentRepository.save(student);
+    }
+
+    public void deleteStudentById(Long studentId) {
+
+        Boolean exists = studentRepository.existsById(studentId);
+
+        if (!exists) {
+            throw new IllegalStateException("Student with id " + studentId + " does not exist" );
+        }
+        studentRepository.deleteById(studentId);
+
+    }
+
+    public void updateStudentById(Long studentId, String name, String email) {
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+
+        if (optionalStudent.isEmpty()) {
+            throw new IllegalStateException("Student with id " + studentId + " does not exist" );
+        }
+        Student student = optionalStudent.get();
+        student.setFirstName(name);
+        student.setEmail(email);
         studentRepository.save(student);
     }
 }
