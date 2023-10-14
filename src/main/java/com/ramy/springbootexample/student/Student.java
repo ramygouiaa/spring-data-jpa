@@ -3,6 +3,7 @@ package com.ramy.springbootexample.student;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 @Entity
@@ -24,26 +25,25 @@ public class Student {
     private String lastName;
     private String email;
     private LocalDate dob;
+    @Transient
     private Integer age;
 
     public Student() {
     }
 
-    public Student(Long id, String firstName, String lastName, String email, LocalDate dob, Integer age) {
+    public Student(Long id, String firstName, String lastName, String email, LocalDate dob) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
-    public Student(String firstName, String lastName, String email, LocalDate dob, Integer age) {
+    public Student(String firstName, String lastName, String email, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.dob = dob;
-        this.age = age;
     }
 
     public Long getId() {
@@ -67,7 +67,7 @@ public class Student {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setId(Long id) {
